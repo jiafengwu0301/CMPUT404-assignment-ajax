@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 # Copyright 2013 Abram Hindle
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ class ServerTestCase(unittest.TestCase):
 
     def tearDown(self):
         '''nothing'''
-        
+
     def testNothing(self):
         '''nothing'''
 
@@ -53,7 +53,7 @@ class ServerTestCase(unittest.TestCase):
         v = 'T'+str(random.randint(1,1000000))
         r = self.app.get(('/entity/%s' % v))
         self.assertTrue(r.status_code == 200, "Code not 200!")
-        self.assertTrue(r.data == '{}', "Not empty? %s" % r.data)
+        self.assertTrue(json.dumps(json.loads(r.data)) == json.dumps(json.loads('{}')), "Not empty? %s" % r.data)
         d = {'x':2, 'y':3}
         r = self.app.put(('/entity/%s' % v),data=json.dumps(d))
         self.assertTrue(r.status_code == 200, "PUT Code not 200!")
@@ -64,7 +64,7 @@ class ServerTestCase(unittest.TestCase):
         self.assertTrue(r.status_code == 200, "Code not 200!")
         self.assertTrue(json.loads(r.data) == d, "D != r.data")
 
-        
+
     def populateWorld(self):
         self.world = dict()
         for i in range(1,20):
@@ -90,11 +90,6 @@ class ServerTestCase(unittest.TestCase):
         newworld = json.loads(r.data)
         for key in self.world:
             self.assertTrue(self.world[key]  == newworld[key], "Key %s" % key)
-
-
-        
-        
-        
 
 if __name__ == '__main__':
     unittest.main()
